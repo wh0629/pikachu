@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pikachu-让代码动起来</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <style id="showStyle"></style>
+</head>
+<body>
+<div  class="showCodes">
+    <pre id="showCode" class="showCode"></pre>
+</div>
+<div class="wrap">
+    <div class="all">
+        <div class="norse"></div>
+        <div class="eyes left"></div>
+        <div class="eyes right"></div>
+        <div class="face left"></div>
+        <div class="face right"></div>
+        <div class="upperLip left"></div>
+        <div class="upperLip right"></div>
+        <div class="lowerLip-wrap">
+            <div class="lowerLip"></div>
+        </div>
+    </div>
+</div>
+<div class="actions">
+    <a href="javascript:void(0);" data-speed="slow">慢速</a>
+    <a href="javascript:void(0);" data-speed="normal">中速</a>
+    <a href="javascript:void(0);" data-speed="fast">快速</a>
+</div>
+<script>
+    $(function () {
+      let duration = 50;
+      $('.actions').on('click','a',function (e) {
+        let $btn = $(e.currentTarget);//button
+        let speed = $btn.attr('data-speed');
+        $btn.addClass('active').siblings('.active').removeClass('active');
+        switch(speed){
+          case 'slow':
+            duration = 500;
+            break;
+          case 'normal':
+            duration = 100;
+            break;
+          case 'fast':
+            duration = 30;
+            break;
+        }
+
+      })
+      function writeCode(code,fn) {
+        let n = 1;
+        let id;
+        id = setTimeout(function run() {//setInterval转setTimeout，函数名必须写，为了后面好调用
+          n += 1;
+          $('#showCode').text(code.substring(0,n));
+          $('#showStyle').text(code.substring(0,n));
+//          var height =  $("#showCode")[0].scrollHeight;
+//          console.log(height);
+          $("#showCode").scrollTop($("#showCode")[0].scrollHeight);
+          if(n<code.length){
+            id = setTimeout(run,duration);//再调用一次run函数
+          }else{
+            fn && fn.call();
+          }
+        },duration)
+      }
+      let code = `
+    /*鼻子*/
+    .norse{
+        position: absolute;
+        top: 28px;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-color:black transparent transparent;
+        margin-left: -12px;
+        border-radius: 11px;
+        border-style: solid;
+        border-width: 12px;
+    }
+    /*眼睛*/
+    .eyes{
+        width:50px;
+        height: 50px;
+        background: #2e2e2e;
+        border-radius: 50%;
+        border:2px solid #000;
+        position: absolute;
+    }
+    /*眼白*/
+    .eyes:after{
+        content: '';
+        width: 24px;
+        height:24px;
+        background: #fff;
+        display: block;
+        border-radius: 50%;
+        position: absolute;
+        left: 7px;
+        top:1px;
+    }
+    /*左眼*/
+    .eyes.left{
+        right: 50%;
+        margin-right: 90px;
+    }
+    /*右眼*/
+    .eyes.right{
+        left: 50%;
+        margin-left: 90px;
+    }
+    /*脸*/
+    .face{
+        position: absolute;
+        top: 85px;
+        width: 68px;
+        height: 68px;
+        background: #FC0D1C;
+        border-radius: 50%;
+        border: 2px solid black;
+    }
+    .face.left{
+        right: 50%;
+        margin-right: 116px;
+    }
+    .face.right{
+        left: 50%;
+        margin-left: 116px;
+    }
+    /*上嘴唇*/
+    .upperLip{
+        width: 80px;
+        height: 25px;
+        background:#fee433;
+        border: 2px solid black;
+        position: absolute;
+        top: 50px;
+        z-index: 1;
+    }
+    .upperLip.left{
+        right: 50%;
+        border-bottom-left-radius: 40px 30px;
+        transform: rotate(-20deg);
+        border-right: none;
+        border-top: none;
+    }
+    .upperLip.right{
+        left: 50%;
+        border-bottom-right-radius: 40px 30px;
+        transform: rotate(20deg);
+        border-left: none;
+        border-top: none;
+    }
+    /*下嘴唇*/
+    .lowerLip-wrap{
+        width:300px;
+        height: 120px;
+        position: absolute;
+        left: 50%;
+        margin-left: -150px;
+        top: 60px;
+        overflow: hidden;
+    }
+    .lowerLip{
+        position: absolute;
+        bottom: 0;
+        width: 300px;
+        height: 3500px;
+        background: #990513;
+        border-radius: 200px/2000px;
+        border:2px solid black;
+        overflow: hidden;
+    }
+    .lowerLip:after{
+        content: '';
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: #fc4a62;
+        display: block;
+        position: absolute;
+        bottom: -2px;
+        left: 50%;
+        margin-left: -50px;
+    }`
+      writeCode(code);
+    })
+</script>
+</body>
+</html>
